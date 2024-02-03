@@ -53,6 +53,9 @@ def minimax(plateau, profondeur, est_maximisant):
         return meilleur_score
 
 
-
+def meilleur_coup(plateau):
+    meilleur_score = -float("inf")
+    coup = None
+   
 
 jeu()
