@@ -41,24 +41,50 @@ def jeu():
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
             gagnant, alignement = verifier_gagnant(plateau)
             if gagnant:
+                scores[gagnant] += 1
+                afficher_scores()
                 dessiner_ligne_gagnante(canvas, alignement)
                 tkinter.messagebox.showinfo("Morpion", f"Le joueur {gagnant} a gagné!")
-                fenetre.quit()
+                reinitialiser_jeu()
+                return
+            if all(all(cell != "" for cell in row) for row in plateau):
+                tkinter.messagebox.showinfo("Morpion", "Match nul!")
+                reinitialiser_jeu()
                 return
             joueur_actuel = "O" if joueur_actuel == "X" else "X"
 
+    def reinitialiser_jeu():
+        nonlocal plateau, joueur_actuel
+        plateau = initialiser_plateau()
+        joueur_actuel = "X"
+        canvas.delete("all")
+        dessiner_grille()
+
+    def afficher_scores():
+        score_label.config(text=f"X: {scores['X']}  O: {scores['O']}")
+
+    def dessiner_grille():
+        for i in range(4):
+            canvas.create_line(0, i * 100, 300, i * 100, fill="black")
+            canvas.create_line(i * 100, 0, i * 100, 300, fill="black")
+
     fenetre = tk.Tk()
     fenetre.title("Morpion")
+
+    scores = {"X": 0, "O": 0}
+    joueur_actuel = "X"
+    plateau = initialiser_plateau()
+
     canvas = tk.Canvas(fenetre, width=300, height=300)
     canvas.bind("<Button-1>", sur_clic)
     canvas.pack()
+    dessiner_grille()
 
-    plateau = initialiser_plateau()
-    joueur_actuel = "X"
+    score_label = tk.Label(fenetre, text=f"X: {scores['X']}  O: {scores['O']}")
+    score_label.pack()
 
-    for i in range(4):
-        canvas.create_line(0, i * 100, 300, i * 100, fill="black")
-        canvas.create_line(i * 100, 0, i * 100, 300, fill="black")
+    bouton_quitter = tk.Button(fenetre, text="Quitter", command=fenetre.destroy)
+    bouton_quitter.pack()
 
     fenetre.mainloop()
 
