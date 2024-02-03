@@ -22,3 +22,25 @@ def verifier_gagnant(plateau, joueur):
 def verifier_match_nul(plateau):
     return all(all(cell != "" for cell in row) for row in plateau)
 
+
+def minimax(plateau, profondeur, est_maximisant):
+    if verifier_gagnant(plateau, "O"):
+        return -1
+    if verifier_gagnant(plateau, "X"):
+        return 1
+    if verifier_match_nul(plateau):
+        return 0
+
+    if est_maximisant:
+        meilleur_score = -float("inf")
+        for i in range(3):
+            for j in range(3):
+                if plateau[i][j] == "":
+                    plateau[i][j] = "X"
+                    score = minimax(plateau, profondeur + 1, False)
+                    plateau[i][j] = ""
+                    meilleur_score = max(meilleur_score, score)
+        return meilleur_score
+   
+
+jeu()
