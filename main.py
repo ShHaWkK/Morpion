@@ -19,35 +19,6 @@ def verifier_gagnant(plateau, joueur):
     return False
 
 
-def coup(plateau, ligne, colonne, joueur):
-    if plateau[ligne][colonne] == "":
-        plateau[ligne][colonne] = joueur
-        return True
-    return False
+def verifier_match_nul(plateau):
+    return all(all(cell != "" for cell in row) for row in plateau)
 
-
-def jeu():
-    def sur_clic(ligne, colonne):
-        nonlocal joueur_actuel
-        if coup(plateau, ligne, colonne, joueur_actuel):
-            boutons[ligne][colonne].config(text=joueur_actuel)
-            if verifier_gagnant(plateau, joueur_actuel):
-                tkinter.messagebox.showinfo("Morpion", f"Le joueur {joueur_actuel} a gagné!")
-                fenetre.quit()
-            joueur_actuel = "O" if joueur_actuel == "X" else "X"
-
-    fenetre = tk.Tk()
-    fenetre.title("Morpion")
-    plateau = initialiser_plateau()
-    joueur_actuel = "X"
-    boutons = [[tk.Button(fenetre, text="", font="Arial 20", width=5, height=2,
-                          command=lambda i=i, j=j: sur_clic(i, j))
-                for j in range(3)] for i in range(3)]
-    for i in range(3):
-        for j in range(3):
-            boutons[i][j].grid(row=i, column=j)
-
-    fenetre.mainloop()
-
-
-jeu()
