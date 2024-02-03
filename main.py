@@ -56,6 +56,15 @@ def minimax(plateau, profondeur, est_maximisant):
 def meilleur_coup(plateau):
     meilleur_score = -float("inf")
     coup = None
-   
+    for i in range(3):
+        for j in range(3):
+            if plateau[i][j] == "":
+                plateau[i][j] = "X"
+                score = minimax(plateau, 0, False)
+                plateau[i][j] = ""
+                if score > meilleur_score:
+                    meilleur_score = score
+                    coup = (i, j)
+    return coup
 
 jeu()
