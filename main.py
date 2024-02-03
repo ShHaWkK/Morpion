@@ -67,4 +67,20 @@ def meilleur_coup(plateau):
                     coup = (i, j)
     return coup
 
+def jeu():
+    def sur_clic(ligne, colonne):
+        nonlocal joueur_actuel
+        if plateau[ligne][colonne] == "":
+            plateau[ligne][colonne] = joueur_actuel
+            boutons[ligne][colonne].config(text=joueur_actuel)
+            if verifier_gagnant(plateau, joueur_actuel):
+                tkinter.messagebox.showinfo("Morpion", f"Le joueur {joueur_actuel} a gagné!")
+                fenetre.quit()
+                return
+            if verifier_match_nul(plateau):
+                tkinter.messagebox.showinfo("Morpion", "Match nul!")
+                fenetre.quit()
+                return
+            
+
 jeu()
