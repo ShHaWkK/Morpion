@@ -32,7 +32,7 @@ def dessiner_ligne_gagnante(canvas, alignement):
     x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
     canvas.create_line(x1, y1, x2, y2, width=4, fill="green")
 
-def jeu():
+def jeu(niveau_difficulte):
     def sur_clic(event):
         nonlocal joueur_actuel
         colonne, ligne = event.x // 100, event.y // 100
@@ -88,4 +88,18 @@ def jeu():
 
     fenetre.mainloop()
 
-jeu()
+def ecran_de_demarrage():
+    def demarrer_jeu(niveau):
+        ecran_principal.destroy()
+        jeu(niveau)
+
+    ecran_principal = tk.Tk()
+    ecran_principal.title("Morpion - Démarrage")
+
+    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu("Facile")).pack()
+    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu("Moyen")).pack()
+    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu("Difficile")).pack()
+
+    ecran_principal.mainloop()
+
+ecran_de_demarrage()
