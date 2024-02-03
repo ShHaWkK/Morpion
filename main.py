@@ -41,6 +41,18 @@ def minimax(plateau, profondeur, est_maximisant):
                     plateau[i][j] = ""
                     meilleur_score = max(meilleur_score, score)
         return meilleur_score
-   
+    else:
+        meilleur_score = float("inf")
+        for i in range(3):
+            for j in range(3):
+                if plateau[i][j] == "":
+                    plateau[i][j] = "O"
+                    score = minimax(plateau, profondeur + 1, True)
+                    plateau[i][j] = ""
+                    meilleur_score = min(meilleur_score, score)
+        return meilleur_score
+
+
+
 
 jeu()
