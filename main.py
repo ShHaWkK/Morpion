@@ -81,6 +81,29 @@ def jeu():
                 tkinter.messagebox.showinfo("Morpion", "Match nul!")
                 fenetre.quit()
                 return
-            
+            joueur_actuel = "O" if joueur_actuel == "X" else "X"
+            if joueur_actuel == "X" and jouer_contre_ia:
+                i, j = meilleur_coup(plateau)
+                sur_clic(i, j)
+
+    fenetre = tk.Tk()
+    fenetre.title("Morpion")
+    plateau = initialiser_plateau()
+    joueur_actuel = "O"
+    jouer_contre_ia = True  # Mettre à False pour jouer à deux joueurs
+    boutons = [[tk.Button(fenetre, text="", font="Arial 20", width=5, height=2,
+                          command=lambda i=i, j=j: sur_clic(i, j))
+                for j in range(3)] for i in range(3)]
+    for i in range(3):
+        for j in range(3):
+            boutons[i][j].grid(row=i, column=j)
+
+    if jouer_contre_ia and random.choice([True, False]):
+        joueur_actuel = "X"
+        i, j = meilleur_coup(plateau)
+        sur_clic(i, j)
+
+    fenetre.mainloop()
+
 
 jeu()
