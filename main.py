@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
+import random
 
 
 def initialiser_plateau():
