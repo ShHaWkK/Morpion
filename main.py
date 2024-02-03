@@ -1,20 +1,15 @@
+import tkinter as tk
+import tkinter.messagebox
+
+
 def initialiser_plateau():
-    return [[" " for _ in range(3)] for _ in range(3)]
+    return [["" for _ in range(3)] for _ in range(3)]
 
-def afficher_plateau(plateau):
-    for ligne in plateau:
-        print("|".join(ligne))
-        print("-" * 5)
-def jouer(plateau, joueur, ligne, colonne):
-    if plateau[ligne][colonne] == " ":
-        plateau[ligne][colonne] = joueur
-        return True
-    return False
 
-def gagnant(plateau, joueur):
+def verifier_gagnant(plateau, joueur):
     for i in range(3):
         if all([cell == joueur for cell in plateau[i]]) or \
-           all([plateau[j][i] == joueur for j in range(3)]):
+                all([plateau[j][i] == joueur for j in range(3)]):
             return True
     if plateau[0][0] == joueur and plateau[1][1] == joueur and plateau[2][2] == joueur:
         return True
@@ -22,26 +17,36 @@ def gagnant(plateau, joueur):
         return True
     return False
 
+
+def coup(plateau, ligne, colonne, joueur):
+    if plateau[ligne][colonne] == "":
+        plateau[ligne][colonne] = joueur
+        return True
+    return False
+
+
 def jeu():
+    def sur_clic(ligne, colonne):
+        nonlocal joueur_actuel
+        if coup(plateau, ligne, colonne, joueur_actuel):
+            boutons[ligne][colonne].config(text=joueur_actuel)
+            if verifier_gagnant(plateau, joueur_actuel):
+                tkinter.messagebox.showinfo("Morpion", f"Le joueur {joueur_actuel} a gagné!")
+                fenetre.quit()
+            joueur_actuel = "O" if joueur_actuel == "X" else "X"
+
+    fenetre = tk.Tk()
+    fenetre.title("Morpion")
     plateau = initialiser_plateau()
     joueur_actuel = "X"
-    nb_coups = 0
+    boutons = [[tk.Button(fenetre, text="", font="Arial 20", width=5, height=2,
+                          command=lambda i=i, j=j: sur_clic(i, j))
+                for j in range(3)] for i in range(3)]
+    for i in range(3):
+        for j in range(3):
+            boutons[i][j].grid(row=i, column=j)
 
-    while nb_coups < 9:
-        afficher_plateau(plateau)
-        ligne = int(input(f"Joueur {joueur_actuel}, choisissez votre ligne: "))
-        colonne = int(input(f"Joueur {joueur_actuel}, choisissez votre colonne: "))
-        if jouer(plateau, joueur_actuel, ligne, colonne):
-            if gagnant(plateau, joueur_actuel):
-                afficher_plateau(plateau)
-                print(f"Joueur {joueur_actuel} a gagné!")
-                return
-            joueur_actuel = "O" if joueur_actuel == "X" else "X"
-            nb_coups += 1
-        else:
-            print("Case déjà occupée, veuillez réessayer.")
+    fenetre.mainloop()
 
-    afficher_plateau(plateau)
-    print("Match nul!")
 
 jeu()
