@@ -87,20 +87,24 @@ def jeu(niveau_difficulte):
 
     fenetre = tk.Tk()
     fenetre.title("Morpion")
+    fenetre.configure(bg="#D3D3D3")  # Couleur de fond
 
     scores = {"X": 0, "O": 0}
     joueur_actuel = "O"
     plateau = initialiser_plateau()
 
+    customFont = tkFont.Font(family="Helvetica", size=12)  # Police personnalisée
+
     canvas = tk.Canvas(fenetre, width=300, height=300)
     canvas.bind("<Button-1>", sur_clic)
     canvas.pack()
+
     dessiner_grille()
 
-    score_label = tk.Label(fenetre, text=f"X: {scores['X']}  O: {scores['O']}")
+    score_label = tk.Label(fenetre, text=f"X: {scores['X']}  O: {scores['O']}", font=customFont, bg="#D3D3D3")
     score_label.pack()
 
-    bouton_quitter = tk.Button(fenetre, text="Quitter", command=fenetre.destroy)
+    bouton_quitter = tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=customFont)
     bouton_quitter.pack()
 
     fenetre.mainloop()
@@ -112,11 +116,14 @@ def ecran_de_demarrage():
 
     ecran_principal = tk.Tk()
     ecran_principal.title("Morpion - Démarrage")
+    ecran_principal.configure(bg="#D3D3D3")  # Couleur de fond
 
-    tk.Button(ecran_principal, text="Humain", command=lambda: demarrer_jeu("Humain")).pack()
-    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu("Facile")).pack()
-    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu("Moyen")).pack()
-    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu("Difficile")).pack()
+    customFont = tkFont.Font(family="Helvetica", size=12)  # Police personnalisée
+
+    tk.Button(ecran_principal, text="Humain", command=lambda: demarrer_jeu("Humain"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu("Facile"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu("Moyen"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu("Difficile"), font=customFont).pack()
 
     ecran_principal.mainloop()
 
