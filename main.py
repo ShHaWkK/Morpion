@@ -28,10 +28,11 @@ def dessiner_symbole(canvas, ligne, colonne, symbole):
     x1, y1 = colonne * 100 + 10, ligne * 100 + 10
     x2, y2 = x1 + 80, y1 + 80
     if symbole == "X":
-        canvas.create_line(x1, y1, x2, y2, width=2, fill="red")
-        canvas.create_line(x1, y2, x2, y1, width=2, fill="red")
+        canvas.create_line(x1, y1, x2, y2, width=2, fill="#FF5733")
+        canvas.create_line(x1, y2, x2, y1, width=2, fill="#FF5733")
     elif symbole == "O":
-        canvas.create_oval(x1, y1, x2, y2, width=2, outline="blue")
+        canvas.create_oval(x1, y1, x2, y2, width=2, outline="#33C1FF")
+
 
 def dessiner_ligne_gagnante(canvas, alignement):
     x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
