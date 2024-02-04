@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox
+import random
 
 def initialiser_plateau():
     return [["" for _ in range(3)] for _ in range(3)]
@@ -33,30 +34,40 @@ def dessiner_ligne_gagnante(canvas, alignement):
     canvas.create_line(x1, y1, x2, y2, width=4, fill="green")
 
 def jeu(niveau_difficulte):
+    def jouer_coup_ia():
+        coup = mouvement_ia_aleatoire(plateau)
+        if coup:
+            ligne, colonne = coup
+            plateau[ligne][colonne] = "X"
+            dessiner_symbole(canvas, ligne, colonne, "X")
+            verifier_et_gerer_fin_de_jeu("X")
+
+    def verifier_et_gerer_fin_de_jeu(joueur):
+        gagnant, alignement = verifier_gagnant(plateau)
+        if gagnant:
+            scores[gagnant] += 1
+            afficher_scores()
+            dessiner_ligne_gagnante(canvas, alignement)
+            tkinter.messagebox.showinfo("Morpion", f"Le joueur {gagnant} a gagné!")
+            reinitialiser_jeu()
+        elif all(all(cell != "" for cell in row) for row in plateau):
+            tkinter.messagebox.showinfo("Morpion", "Match nul!")
+            reinitialiser_jeu()
+
     def sur_clic(event):
         nonlocal joueur_actuel
         colonne, ligne = event.x // 100, event.y // 100
-        if plateau[ligne][colonne] == "":
+        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
-            gagnant, alignement = verifier_gagnant(plateau)
-            if gagnant:
-                scores[gagnant] += 1
-                afficher_scores()
-                dessiner_ligne_gagnante(canvas, alignement)
-                tkinter.messagebox.showinfo("Morpion", f"Le joueur {gagnant} a gagné!")
-                reinitialiser_jeu()
-                return
-            if all(all(cell != "" for cell in row) for row in plateau):
-                tkinter.messagebox.showinfo("Morpion", "Match nul!")
-                reinitialiser_jeu()
-                return
-            joueur_actuel = "O" if joueur_actuel == "X" else "X"
+            verifier_et_gerer_fin_de_jeu(joueur_actuel)
+            if niveau_difficulte != "Humain":
+                jouer_coup_ia()
 
     def reinitialiser_jeu():
         nonlocal plateau, joueur_actuel
         plateau = initialiser_plateau()
-        joueur_actuel = "X"
+        joueur_actuel = "O"
         canvas.delete("all")
         dessiner_grille()
 
