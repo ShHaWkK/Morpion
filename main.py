@@ -19,6 +19,10 @@ def verifier_gagnant(plateau):
 
     return None, None
 
+def mouvement_ia_aleatoire(plateau):
+    cases_vides = [(i, j) for i in range(3) for j in range(3) if plateau[i][j] == ""]
+    return random.choice(cases_vides) if cases_vides else None
+
 def dessiner_symbole(canvas, ligne, colonne, symbole):
     x1, y1 = colonne * 100 + 10, ligne * 100 + 10
     x2, y2 = x1 + 80, y1 + 80
@@ -83,7 +87,7 @@ def jeu(niveau_difficulte):
     fenetre.title("Morpion")
 
     scores = {"X": 0, "O": 0}
-    joueur_actuel = "X"
+    joueur_actuel = "O"
     plateau = initialiser_plateau()
 
     canvas = tk.Canvas(fenetre, width=300, height=300)
@@ -107,6 +111,7 @@ def ecran_de_demarrage():
     ecran_principal = tk.Tk()
     ecran_principal.title("Morpion - Démarrage")
 
+    tk.Button(ecran_principal, text="Humain", command=lambda: demarrer_jeu("Humain")).pack()
     tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu("Facile")).pack()
     tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu("Moyen")).pack()
     tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu("Difficile")).pack()
