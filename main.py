@@ -2,88 +2,90 @@ import tkinter as tk
 import tkinter.messagebox
 import random
 
-# Initialisation du plateau de jeu
+# Fonctions principales du jeu
 def initialiser_plateau():
     return [["" for _ in range(3)] for _ in range(3)]
 
-# Vérification de la condition de victoire
 def verifier_gagnant(plateau):
-    # Lignes
-    for row in plateau:
-        if row[0] == row[1] == row[2] != "":
-            return row[0]
-    # Colonnes
-    for col in range(3):
-        if plateau[0][col] == plateau[1][col] == plateau[2][col] != "":
-            return plateau[0][col]
-    # Diagonales
+    for i in range(3):
+        if plateau[i][0] == plateau[i][1] == plateau[i][2] != "":
+            return plateau[i][0]
+        if plateau[0][i] == plateau[1][i] == plateau[2][i] != "":
+            return plateau[0][i]
+
     if plateau[0][0] == plateau[1][1] == plateau[2][2] != "":
         return plateau[0][0]
     if plateau[0][2] == plateau[1][1] == plateau[2][0] != "":
         return plateau[0][2]
-    # Pas de gagnant
+
+    if all(cell != "" for row in plateau for cell in row):
+        return "Match nul"
     return None
 
-# Trouve un mouvement aléatoire pour l'IA
+def dessiner_symbole(canvas, ligne, colonne, symbole):
+    taille_cellule = 100
+    x = colonne * taille_cellule
+    y = ligne * taille_cellule
+    if symbole == "X":
+        canvas.create_line(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, fill="red", width=2)
+        canvas.create_line(x + taille_cellule - 20, y + 20, x + 20, y + taille_cellule - 20, fill="red", width=2)
+    elif symbole == "O":
+        canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=2)
+
+def dessiner_ligne_gagnante(canvas, alignement):
+    if alignement:
+        x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
+        x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
+        canvas.create_line(x1, y1, x2, y2, width=8, fill="green")
+
+def dessiner_grille(canvas):
+    taille_cellule = 100
+    for i in range(1, 3):
+        canvas.create_line(i * taille_cellule, 0, i * taille_cellule, 3 * taille_cellule, fill="black")
+        canvas.create_line(0, i * taille_cellule, 3 * taille_cellule, i * taille_cellule, fill="black")
+
 def mouvement_ia_aleatoire(plateau):
     cases_vides = [(i, j) for i in range(3) for j in range(3) if plateau[i][j] == ""]
     return random.choice(cases_vides) if cases_vides else None
 
-# Fonction pour dessiner les symboles X et O
-def dessiner_symbole(canvas, ligne, colonne, symbole):
-    x1, y1 = colonne * 100 + 10, ligne * 100 + 10
-    x2, y2 = x1 + 80, y1 + 80
-    if symbole == "X":
-        canvas.create_line(x1, y1, x2, y2, width=2, fill="red")
-        canvas.create_line(x1, y2, x2, y1, width=2, fill="red")
-    elif symbole == "O":
-        canvas.create_oval(x1, y1, x2, y2, width=2, outline="blue")
-
-# Fonction pour dessiner la grille de jeu
-def dessiner_grille(canvas):
-    for i in range(1, 3):
-        canvas.create_line(i * 100, 0, i * 100, 300, fill="black")
-        canvas.create_line(0, i * 100, 300, i * 100, fill="black")
-
-
-def jeu():
+def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     def sur_clic(event):
-        x, y = event.x, event.y
-        colonne = x // 100
-        ligne = y // 100
+        nonlocal joueur_actuel
+        colonne = event.x // 100
+        ligne = event.y // 100
 
-        if plateau[ligne][colonne] == "":
+        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
             gagnant = verifier_gagnant(plateau)
-
             if gagnant:
-                annonce_gagnant(gagnant)
-            else:
-                changer_joueur()
+                annoncer_gagnant(gagnant)
+                return
+            joueur_actuel = "X"
+            if jouer_contre_ia:
+                coup_ia = mouvement_ia_aleatoire(plateau)
+                plateau[coup_ia[0]][coup_ia[1]] = "X"
+                dessiner_symbole(canvas, coup_ia[0], coup_ia[1], "X")
+                gagnant = verifier_gagnant(plateau)
+                if gagnant:
+                    annoncer_gagnant(gagnant)
+                    return
+                joueur_actuel = "O"
 
-    def changer_joueur():
-        nonlocal joueur_actuel
-        joueur_actuel = "O" if joueur_actuel == "X" else "X"
-        label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
-
-    def annonce_gagnant(gagnant):
-        if gagnant == "Match nul":
-            tkinter.messagebox.showinfo(title="Morpion", message="Match nul!")
-        else:
-            tkinter.messagebox.showinfo(title="Morpion", message=f"Le joueur {gagnant} gagne!")
+    def annoncer_gagnant(gagnant):
+        fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
+        tkinter.messagebox.showinfo("Fin de partie", fin_message)
         fenetre.after(2000, reinitialiser_jeu)
 
     def reinitialiser_jeu():
         nonlocal plateau, joueur_actuel
-        canvas.delete("all")
+        joueur_actuel = "O"
         plateau = initialiser_plateau()
-        joueur_actuel = "X"
+        canvas.delete("all")
         dessiner_grille(canvas)
-        label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
+    joueur_actuel = "O"
     plateau = initialiser_plateau()
-    joueur_actuel = "X"
 
     fenetre = tk.Tk()
     fenetre.title("Morpion")
