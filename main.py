@@ -89,6 +89,7 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         plateau = initialiser_plateau()
         canvas.delete("all")
         dessiner_grille(canvas)
+        label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
     joueur_actuel = "O"
     plateau = initialiser_plateau()
