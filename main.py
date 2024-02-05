@@ -50,62 +50,7 @@ def mouvement_ia_aleatoire(plateau):
     return random.choice(cases_vides) if cases_vides else None
 
 def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
-    def sur_clic(event):
-        nonlocal joueur_actuel
-        colonne = event.x // 100
-        ligne = event.y // 100
-
-        def jouer_coup_ia():
-            if jouer_contre_ia and joueur_actuel == "X":
-                fenetre.after(500, coup_ia)
-
-        def coup_ia():
-            coup = mouvement_ia_aleatoire(plateau)
-            plateau[coup[0]][coup[1]] = "X"
-            dessiner_symbole(canvas, coup[0], coup[1], "X")
-            verifier_et_gerer_fin_de_jeu()
-
-        def verifier_et_gerer_fin_de_jeu():
-            gagnant, alignement = verifier_gagnant(plateau)
-            if gagnant:
-                annoncer_gagnant(gagnant, alignement)
-
-        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
-            plateau[ligne][colonne] = joueur_actuel
-            dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
-            gagnant, alignement = verifier_gagnant(plateau)
-            if gagnant:
-                annoncer_gagnant(gagnant, alignement)
-                return
-            joueur_actuel = "X"
-            label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
-
-            if jouer_contre_ia:
-                # Ajouter la logique de l'IA ici en fonction du niveau de difficulté
-                coup_ia = mouvement_ia_aleatoire(plateau)  # Utilisez votre logique IA ici
-                plateau[coup_ia[0]][coup_ia[1]] = "X"
-                dessiner_symbole(canvas, coup_ia[0], coup_ia[1], "X")
-                gagnant, alignement = verifier_gagnant(plateau)
-                if gagnant:
-                    annoncer_gagnant(gagnant, alignement)
-                    return
-                joueur_actuel = "O"
-                label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
-
-    def annoncer_gagnant(gagnant, alignement):
-        fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
-        tkinter.messagebox.showinfo("Fin de partie", fin_message)
-        dessiner_ligne_gagnante(canvas, alignement)
-        fenetre.after(2000, reinitialiser_jeu)
-
-    def reinitialiser_jeu():
-        nonlocal plateau, joueur_actuel
-        joueur_actuel = "O"
-        plateau = initialiser_plateau()
-        canvas.delete("all")
-        dessiner_grille(canvas)
-        label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
-
+    scores = {'X': 0, 'O': 0}
     joueur_actuel = "O"
     plateau = initialiser_plateau()
 
@@ -114,13 +59,57 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
 
     canvas = tk.Canvas(fenetre, width=300, height=300)
     canvas.pack()
-    canvas.bind("<Button-1>", sur_clic)
-
     dessiner_grille(canvas)
 
     label_joueur = tk.Label(fenetre, text=f"Joueur actuel: {joueur_actuel}", font=('Helvetica', 14))
     label_joueur.pack()
 
+    score_label = tk.Label(fenetre, text=f"Score: X - {scores['X']}, O - {scores['O']}", font=('Helvetica', 14))
+    score_label.pack()
+
+    def sur_clic(event):
+        nonlocal joueur_actuel
+        colonne = event.x // 100
+        ligne = event.y // 100
+
+        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
+            plateau[ligne][colonne] = joueur_actuel
+            dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
+            verifier_et_gerer_fin_de_jeu()
+
+        if jouer_contre_ia and joueur_actuel == "X":
+            fenetre.after(500, jouer_coup_ia)
+
+    def jouer_coup_ia():
+        coup = mouvement_ia_aleatoire(plateau)
+        if coup:
+            plateau[coup[0]][coup[1]] = "X"
+            dessiner_symbole(canvas, coup[0], coup[1], "X")
+            verifier_et_gerer_fin_de_jeu()
+
+    def verifier_et_gerer_fin_de_jeu():
+        gagnant, alignement = verifier_gagnant(plateau)
+        if gagnant:
+            dessiner_ligne_gagnante(canvas, alignement)
+            fenetre.after(500, lambda: annoncer_gagnant(gagnant))
+
+    def annoncer_gagnant(gagnant):
+        if gagnant != "Match nul":
+            scores[gagnant] += 1
+            score_label.config(text=f"Score: X - {scores['X']}, O - {scores['O']}")
+        fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
+        tkinter.messagebox.showinfo("Fin de partie", fin_message)
+        reinitialiser_jeu()
+
+    def reinitialiser_jeu():
+        nonlocal plateau, joueur_actuel
+        plateau = initialiser_plateau()
+        joueur_actuel = "O"
+        canvas.delete("all")
+        dessiner_grille(canvas)
+        label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
+
+    canvas.bind("<Button-1>", sur_clic)
     fenetre.mainloop()
 
 def ecran_de_demarrage():
