@@ -100,28 +100,29 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     canvas = tk.Canvas(fenetre, width=300, height=300)
     canvas.pack()
     canvas.bind("<Button-1>", sur_clic)
+
     dessiner_grille(canvas)
 
     label_joueur = tk.Label(fenetre, text=f"Joueur actuel: {joueur_actuel}", font=('Helvetica', 14))
     label_joueur.pack()
 
     fenetre.mainloop()
+
 def ecran_de_demarrage():
-    def demarrer_jeu(niveau):
+    def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
         ecran_principal.destroy()
-        jeu(niveau)
+        jeu(not jouer_contre_ia, niveau_difficulte)
 
     ecran_principal = tk.Tk()
     ecran_principal.title("Morpion - Démarrage")
-    ecran_principal.configure(bg="#D3D3D3")  # Couleur de fond
 
-    customFont = tkFont.Font(family="Helvetica", size=12)  # Police personnalisée
+    customFont = tkFont.Font(family="Helvetica", size=12)
 
-    tk.Button(ecran_principal, text="Humain", command=lambda: demarrer_jeu("Humain"), font=customFont).pack()
-    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu("Facile"), font=customFont).pack()
-    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu("Moyen"), font=customFont).pack()
-    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu("Difficile"), font=customFont).pack()
+    # Pour jouer contre un autre joueur humain
+    tk.Button(ecran_principal, text="Joueur vs Joueur", command=lambda: demarrer_jeu(False, "Humain"), font=customFont).pack()
+    # Pour jouer contre l'IA avec différents niveaux de difficulté
+    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu(True, "Facile"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu(True, "Moyen"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu(True, "Difficile"), font=customFont).pack()
 
     ecran_principal.mainloop()
-
-ecran_de_demarrage()
