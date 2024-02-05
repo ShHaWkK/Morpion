@@ -3,7 +3,6 @@ import tkinter.messagebox
 import random
 import tkinter.font as tkFont
 
-# Fonctions principales du jeu
 def initialiser_plateau():
     return [["" for _ in range(3)] for _ in range(3)]
 
@@ -39,6 +38,7 @@ def dessiner_ligne_gagnante(canvas, alignement, color="green"):
         x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
         x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
         canvas.create_line(x1, y1, x2, y2, width=8, fill=color)
+
 def dessiner_grille(canvas):
     taille_cellule = 100
     for i in range(1, 3):
