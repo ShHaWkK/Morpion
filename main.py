@@ -58,24 +58,29 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
-            gagnant = verifier_gagnant(plateau)
+            gagnant, alignement = verifier_gagnant(plateau)
             if gagnant:
-                annoncer_gagnant(gagnant)
+                annoncer_gagnant(gagnant, alignement)
                 return
             joueur_actuel = "X"
+            label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
+
             if jouer_contre_ia:
-                coup_ia = mouvement_ia_aleatoire(plateau)
+                # Ajouter la logique de l'IA ici en fonction du niveau de difficulté
+                coup_ia = mouvement_ia_aleatoire(plateau)  # Utilisez votre logique IA ici
                 plateau[coup_ia[0]][coup_ia[1]] = "X"
                 dessiner_symbole(canvas, coup_ia[0], coup_ia[1], "X")
-                gagnant = verifier_gagnant(plateau)
+                gagnant, alignement = verifier_gagnant(plateau)
                 if gagnant:
-                    annoncer_gagnant(gagnant)
+                    annoncer_gagnant(gagnant, alignement)
                     return
                 joueur_actuel = "O"
+                label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
-    def annoncer_gagnant(gagnant):
+    def annoncer_gagnant(gagnant, alignement):
         fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
         tkinter.messagebox.showinfo("Fin de partie", fin_message)
+        dessiner_ligne_gagnante(canvas, alignement)
         fenetre.after(2000, reinitialiser_jeu)
 
     def reinitialiser_jeu():
