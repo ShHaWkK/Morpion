@@ -55,6 +55,21 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         colonne = event.x // 100
         ligne = event.y // 100
 
+        def jouer_coup_ia():
+            if jouer_contre_ia and joueur_actuel == "X":
+                fenetre.after(500, coup_ia)
+
+        def coup_ia():
+            coup = mouvement_ia_aleatoire(plateau)
+            plateau[coup[0]][coup[1]] = "X"
+            dessiner_symbole(canvas, coup[0], coup[1], "X")
+            verifier_et_gerer_fin_de_jeu()
+
+        def verifier_et_gerer_fin_de_jeu():
+            gagnant, alignement = verifier_gagnant(plateau)
+            if gagnant:
+                annoncer_gagnant(gagnant, alignement)
+
         if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
