@@ -10,18 +10,19 @@ def initialiser_plateau():
 def verifier_gagnant(plateau):
     for i in range(3):
         if plateau[i][0] == plateau[i][1] == plateau[i][2] != "":
-            return plateau[i][0]
+            return plateau[i][0], [(i, 0), (i, 2)]
         if plateau[0][i] == plateau[1][i] == plateau[2][i] != "":
-            return plateau[0][i]
+            return plateau[0][i], [(0, i), (2, i)]
 
     if plateau[0][0] == plateau[1][1] == plateau[2][2] != "":
-        return plateau[0][0]
+        return plateau[0][0], [(0, 0), (2, 2)]
     if plateau[0][2] == plateau[1][1] == plateau[2][0] != "":
-        return plateau[0][2]
+        return plateau[0][2], [(0, 2), (2, 0)]
 
     if all(cell != "" for row in plateau for cell in row):
-        return "Match nul"
-    return None
+        return "Match nul", []
+
+    return None, []
 
 def dessiner_symbole(canvas, ligne, colonne, symbole):
     taille_cellule = 100
