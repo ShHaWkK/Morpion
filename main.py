@@ -34,12 +34,11 @@ def dessiner_symbole(canvas, ligne, colonne, symbole):
     elif symbole == "O":
         canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=2)
 
-def dessiner_ligne_gagnante(canvas, alignement):
+def dessiner_ligne_gagnante(canvas, alignement, color="green"):
     if alignement:
         x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
         x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
-        canvas.create_line(x1, y1, x2, y2, width=8, fill="green")
-
+        canvas.create_line(x1, y1, x2, y2, width=8, fill=color)
 def dessiner_grille(canvas):
     taille_cellule = 100
     for i in range(1, 3):
