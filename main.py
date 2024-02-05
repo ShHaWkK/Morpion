@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox
 import random
+import tkinter.font as tkFont
 
 # Fonctions principales du jeu
 def initialiser_plateau():
