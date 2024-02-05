@@ -111,7 +111,7 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
 def ecran_de_demarrage():
     def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
         ecran_principal.destroy()
-        jeu(not jouer_contre_ia, niveau_difficulte)
+        jeu(jouer_contre_ia, niveau_difficulte)
 
     ecran_principal = tk.Tk()
     ecran_principal.title("Morpion - Démarrage")
@@ -126,3 +126,5 @@ def ecran_de_demarrage():
     tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu(True, "Difficile"), font=customFont).pack()
 
     ecran_principal.mainloop()
+
+ecran_de_demarrage()
