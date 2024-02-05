@@ -124,11 +124,10 @@ def ecran_de_demarrage():
 
     # Pour jouer contre un autre joueur humain
     tk.Button(ecran_principal, text="Joueur vs Joueur", command=lambda: demarrer_jeu(False, "Humain"), font=customFont).pack()
+
     # Pour jouer contre l'IA avec différents niveaux de difficulté
     tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu(True, "Facile"), font=customFont).pack()
     tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu(True, "Moyen"), font=customFont).pack()
     tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu(True, "Difficile"), font=customFont).pack()
 
     ecran_principal.mainloop()
-
-ecran_de_demarrage()
