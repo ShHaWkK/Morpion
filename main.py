@@ -98,10 +98,10 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         canvas.bind("<Button-1>", sur_clic)
         fenetre.mainloop()
 
-    def sur_clic(event):
-        nonlocal joueur_actuel
-        colonne = event.x // 100
-        ligne = event.y // 100
+def sur_clic(event):
+     nonlocal joueur_actuel
+     colonne = event.x // 100
+     ligne = event.y // 100
 
         if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
@@ -111,9 +111,9 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         if jouer_contre_ia and joueur_actuel == "X":
             fenetre.after(500, jouer_coup_ia)
 
-    fenetre.mainloop()
+fenetre.mainloop()
 
-    def ecran_de_demarrage():
+def ecran_de_demarrage():
         def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
             ecran_principal.destroy()
             jeu(jouer_contre_ia, niveau_difficulte)
@@ -132,4 +132,4 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
 
         ecran_principal.mainloop()
 
-    ecran_de_demarrage()
+ecran_de_demarrage()
