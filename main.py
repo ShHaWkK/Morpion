@@ -19,31 +19,30 @@ def verifier_gagnant(plateau):
         return plateau[0][2], [(0, 2), (2, 0)]
 
     if all(cell != "" for row in plateau for cell in row):
-        return "Match nul", []
+        return "Match nul", None
 
-    return None, []
+    return None, None
 
 def dessiner_symbole(canvas, ligne, colonne, symbole):
     taille_cellule = 100
     x = colonne * taille_cellule
     y = ligne * taille_cellule
     if symbole == "X":
-        canvas.create_line(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, fill="red", width=2)
-        canvas.create_line(x + taille_cellule - 20, y + 20, x + 20, y + taille_cellule - 20, fill="red", width=2)
+        canvas.create_line(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, fill="red", width=4)
+        canvas.create_line(x + taille_cellule - 20, y + 20, x + 20, y + taille_cellule - 20, fill="red", width=4)
     elif symbole == "O":
-        canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=2)
+        canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=4)
 
-def dessiner_ligne_gagnante(canvas, alignement, color="green"):
+def dessiner_ligne_gagnante(canvas, alignement):
     if alignement:
         x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
         x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
-        canvas.create_line(x1, y1, x2, y2, width=8, fill=color)
+        canvas.create_line(x1, y1, x2, y2, width=8, fill="green")
 
 def dessiner_grille(canvas):
-    taille_cellule = 100
     for i in range(1, 3):
-        canvas.create_line(i * taille_cellule, 0, i * taille_cellule, 3 * taille_cellule, fill="black")
-        canvas.create_line(0, i * taille_cellule, 3 * taille_cellule, i * taille_cellule, fill="black")
+        canvas.create_line(i * 100, 0, i * 100, 300, width=4)
+        canvas.create_line(0, i * 100, 300, i * 100, width=4)
 
 def mouvement_ia_aleatoire(plateau):
     cases_vides = [(i, j) for i in range(3) for j in range(3) if plateau[i][j] == ""]
