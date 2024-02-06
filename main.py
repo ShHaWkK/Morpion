@@ -66,6 +66,18 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     score_label = tk.Label(fenetre, text=f"Score: X - {scores['X']}, O - {scores['O']}", font=('Helvetica', 14))
     score_label.pack()
 
+    def sur_clic(event):
+        nonlocal joueur_actuel
+        colonne = event.x // 100
+        ligne = event.y // 100
+
+        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
+            plateau[ligne][colonne] = joueur_actuel
+            dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
+            verifier_et_gerer_fin_de_jeu()
+            if jouer_contre_ia and joueur_actuel == "X":
+                fenetre.after(500, jouer_coup_ia)
+
     def jouer_coup_ia():
         coup = mouvement_ia_aleatoire(plateau)
         if coup:
