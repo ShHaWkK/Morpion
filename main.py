@@ -111,6 +111,8 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         if jouer_contre_ia and joueur_actuel == "X":
             fenetre.after(500, jouer_coup_ia)
 
+    fenetre.mainloop()
+
     def ecran_de_demarrage():
         def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
             ecran_principal.destroy()
