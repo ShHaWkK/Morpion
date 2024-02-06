@@ -86,18 +86,22 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
             verifier_et_gerer_fin_de_jeu()
 
     def verifier_et_gerer_fin_de_jeu():
+        nonlocal joueur_actuel
         gagnant, alignement = verifier_gagnant(plateau)
         if gagnant:
             dessiner_ligne_gagnante(canvas, alignement)
             fenetre.after(500, lambda: annoncer_gagnant(gagnant))
+        else:
+            joueur_actuel = "X" if joueur_actuel == "O" else "O"
+            label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
     def annoncer_gagnant(gagnant):
-        if gagnant != "Match nul":
-            scores[gagnant] += 1
-            score_label.config(text=f"Score: X - {scores['X']}, O - {scores['O']}")
         fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
         tkinter.messagebox.showinfo("Fin de partie", fin_message)
+        scores[gagnant] += 1 if gagnant != "Match nul" else 0
+        score_label.config(text=f"Score: X - {scores['X']}, O - {scores['O']}")
         reinitialiser_jeu()
+
     def reinitialiser_jeu():
         nonlocal plateau, joueur_actuel
         plateau = initialiser_plateau()
