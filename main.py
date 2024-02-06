@@ -87,7 +87,6 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
         tkinter.messagebox.showinfo("Fin de partie", fin_message)
         reinitialiser_jeu()
-
     def reinitialiser_jeu():
         nonlocal plateau, joueur_actuel
         plateau = initialiser_plateau()
