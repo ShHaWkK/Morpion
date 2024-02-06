@@ -110,41 +110,25 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
         dessiner_grille(canvas)
         label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
-        canvas.bind("<Button-1>", sur_clic)
-        fenetre.mainloop()
+    canvas.bind("<Button-1>", sur_clic)
 
-def sur_clic(event):
-     nonlocal joueur_actuel
-     colonne = event.x // 100
-     ligne = event.y // 100
-
-        if plateau[ligne][colonne] == "" and joueur_actuel == "O":
-            plateau[ligne][colonne] = joueur_actuel
-            dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
-            verifier_et_gerer_fin_de_jeu()
-
-        if jouer_contre_ia and joueur_actuel == "X":
-            fenetre.after(500, jouer_coup_ia)
-
-fenetre.mainloop()
+    fenetre.mainloop()
 
 def ecran_de_demarrage():
-        def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
-            ecran_principal.destroy()
-            jeu(jouer_contre_ia, niveau_difficulte)
+    def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
+        ecran_principal.destroy()
+        jeu(jouer_contre_ia, niveau_difficulte)
 
-        ecran_principal = tk.Tk()
-        ecran_principal.title("Morpion - Démarrage")
+    ecran_principal = tk.Tk()
+    ecran_principal.title("Morpion - Démarrage")
 
-        customFont = tkFont.Font(family="Helvetica", size=12)
+    customFont = tkFont.Font(family="Helvetica", size=12)
 
-        tk.Button(ecran_principal, text="Joueur vs Joueur", command=lambda: demarrer_jeu(False, "Humain"),
-                  font=customFont).pack()
-        tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu(True, "Facile"), font=customFont).pack()
-        tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu(True, "Moyen"), font=customFont).pack()
-        tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu(True, "Difficile"),
-                  font=customFont).pack()
+    tk.Button(ecran_principal, text="Joueur vs Joueur", command=lambda: demarrer_jeu(False, "Humain"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Facile", command=lambda: demarrer_jeu(True, "Facile"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Moyen", command=lambda: demarrer_jeu(True, "Moyen"), font=customFont).pack()
+    tk.Button(ecran_principal, text="Difficile", command=lambda: demarrer_jeu(True, "Difficile"), font=customFont).pack()
 
-        ecran_principal.mainloop()
+    ecran_principal.mainloop()
 
 ecran_de_demarrage()
