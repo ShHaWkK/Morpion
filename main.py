@@ -27,9 +27,11 @@ def dessiner_symbole(canvas, ligne, colonne, symbole):
     taille_cellule = 100
     x = colonne * taille_cellule
     y = ligne * taille_cellule
+    
     if symbole == "X":
         canvas.create_line(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, fill="red", width=4)
         canvas.create_line(x + taille_cellule - 20, y + 20, x + 20, y + taille_cellule - 20, fill="red", width=4)
+        
     elif symbole == "O":
         canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=4)
 
