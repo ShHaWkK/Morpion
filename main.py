@@ -36,6 +36,7 @@ def dessiner_symbole(canvas, ligne, colonne, symbole):
         canvas.create_oval(x + 20, y + 20, x + taille_cellule - 20, y + taille_cellule - 20, outline="blue", width=4)
 
 def dessiner_ligne_gagnante(canvas, alignement):
+    
     if alignement:
         x1, y1 = alignement[0][1] * 100 + 50, alignement[0][0] * 100 + 50
         x2, y2 = alignement[1][1] * 100 + 50, alignement[1][0] * 100 + 50
@@ -47,10 +48,12 @@ def dessiner_grille(canvas):
         canvas.create_line(0, i * 100, 300, i * 100, width=4)
 
 def mouvement_ia_aleatoire(plateau):
+    
     cases_vides = [(i, j) for i in range(3) for j in range(3) if plateau[i][j] == ""]
     return random.choice(cases_vides) if cases_vides else None
 
 def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
+    
     scores = {'X': 0, 'O': 0}
     joueur_actuel = "O"
     plateau = initialiser_plateau()
@@ -69,25 +72,30 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     score_label.pack()
 
     def sur_clic(event):
+        
         nonlocal joueur_actuel
         colonne = event.x // 100
         ligne = event.y // 100
 
         if plateau[ligne][colonne] == "" and joueur_actuel == "O":
             plateau[ligne][colonne] = joueur_actuel
+            
             dessiner_symbole(canvas, ligne, colonne, joueur_actuel)
             verifier_et_gerer_fin_de_jeu()
+            
             if jouer_contre_ia and joueur_actuel == "X":
                 fenetre.after(500, jouer_coup_ia)
 
     def jouer_coup_ia():
         coup = mouvement_ia_aleatoire(plateau)
+        
         if coup:
             plateau[coup[0]][coup[1]] = "X"
             dessiner_symbole(canvas, coup[0], coup[1], "X")
             verifier_et_gerer_fin_de_jeu()
 
     def verifier_et_gerer_fin_de_jeu():
+        
         nonlocal joueur_actuel
         gagnant, alignement = verifier_gagnant(plateau)
         if gagnant:
