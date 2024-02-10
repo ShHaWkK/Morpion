@@ -106,13 +106,16 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
             label_joueur.config(text=f"Joueur actuel: {joueur_actuel}")
 
     def annoncer_gagnant(gagnant):
+        
         fin_message = "Match nul !" if gagnant == "Match nul" else f"Le joueur {gagnant} a gagné !"
         tkinter.messagebox.showinfo("Fin de partie", fin_message)
+        
         scores[gagnant] += 1 if gagnant != "Match nul" else 0
         score_label.config(text=f"Score: X - {scores['X']}, O - {scores['O']}")
         reinitialiser_jeu()
 
     def reinitialiser_jeu():
+        
         nonlocal plateau, joueur_actuel
         plateau = initialiser_plateau()
         joueur_actuel = "O"
@@ -125,13 +128,13 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     fenetre.mainloop()
 
 def ecran_de_demarrage():
+    
     def demarrer_jeu(jouer_contre_ia, niveau_difficulte):
         ecran_principal.destroy()
         jeu(jouer_contre_ia, niveau_difficulte)
 
     ecran_principal = tk.Tk()
     ecran_principal.title("Morpion - Démarrage")
-
     customFont = tkFont.Font(family="Helvetica", size=12)
 
     tk.Button(ecran_principal, text="Joueur vs Joueur", command=lambda: demarrer_jeu(False, "Humain"), font=customFont).pack()
