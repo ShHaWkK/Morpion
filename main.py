@@ -56,7 +56,7 @@ def jeu(jouer_contre_ia, niveau_difficulte="Facile"):
     fenetre = tk.Tk()
     fenetre.title("Morpion")
 
-    canvas = tk.Canvas(fenetre, width=300, height=300)
+    canvas = tk.Canvas(fenetre, width=600, height=600)
     canvas.pack()
     dessiner_grille(canvas)
 
